@@ -8,14 +8,14 @@ const PAGE=String.raw`<!doctype html><html lang="zh-Hant"><head><meta charset="u
 .aceternity-spotlight{position:absolute;inset:-1px;pointer-events:none;z-index:0;overflow:hidden;border-radius:inherit;background:radial-gradient(560px circle at var(--spot-x,50%) var(--spot-y,0%),rgba(139,92,246,.18),transparent 62%)}
 .auth,.panel{isolation:isolate}
 .auth>*:not(.aceternity-spotlight),.panel>*:not(.aceternity-spotlight){position:relative;z-index:1}
-.aceternity-moving-border{position:relative;isolation:isolate;overflow:hidden;padding:1px;border:0;background:transparent}
-.aceternity-moving-border:before{content:"";position:absolute;inset:-180%;z-index:0;background:conic-gradient(from 0deg,transparent 0 68%,#a78bfa 76%,#67e8f9 82%,transparent 90%);animation:aceternity-border-spin 4s linear infinite}
-.aceternity-moving-border:after{content:"";position:absolute;inset:1px;z-index:1;border-radius:inherit;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2)}
-.aceternity-moving-border span{position:relative;z-index:2;display:inline-flex;align-items:center;justify-content:center}
-@keyframes aceternity-border-spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.aceternity-moving-border:before{animation:none}.aceternity-beams{opacity:.16}}
+.aceternity-moving-border{position:relative;isolation:isolate;overflow:hidden;padding:1px;border:0;background:transparent;display:inline-flex;align-items:stretch;justify-content:stretch}
+.aceternity-moving-border-track{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aceternity-border-svg{position:absolute;inset:0;overflow:visible}
+.aceternity-moving-border-glow{width:76px;height:76px;background:radial-gradient(#0ea5e9 40%,transparent 62%);opacity:.9}
+.aceternity-moving-border-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2);padding:0 18px;color:white}
+@media(prefers-reduced-motion:reduce){.aceternity-beams{opacity:.16}}
 </style></head><body><div id="root"></div><script type="module">
-import React,{useEffect,useState}from"https://esm.sh/react@18.3.1";import{createRoot}from"https://esm.sh/react-dom@18.3.1/client?external=react";import{motion}from"https://esm.sh/framer-motion@11.18.2?external=react";
+import React,{useEffect,useState}from"https://esm.sh/react@18.3.1";import{createRoot}from"https://esm.sh/react-dom@18.3.1/client?external=react";import{motion,useAnimationFrame,useMotionValue,useTransform}from"https://esm.sh/motion@12.23.24/react?external=react";
 const el=React.createElement;
 
 const beamPaths=[
@@ -28,7 +28,24 @@ const beamPaths=[
 ];
 function BackgroundBeams(){return el("div",{className:"aceternity-beams","aria-hidden":true},el("svg",{viewBox:"0 0 1200 800",fill:"none",preserveAspectRatio:"xMidYMid slice"},...beamPaths.map((d,i)=>el(motion.path,{key:i,d,stroke:i%2?"#67e8f9":"#a78bfa",strokeWidth:1.1,strokeLinecap:"round",initial:{pathLength:0,opacity:0},animate:{pathLength:[0,1,.25],opacity:[0,.62,.12]},transition:{duration:8+i*1.4,delay:i*.7,repeat:Infinity,ease:"easeInOut"}}))))}
 function Spotlight(){return el(motion.div,{className:"aceternity-spotlight","aria-hidden":true,initial:{opacity:0},animate:{opacity:1},transition:{duration:1.1}})}
-function MovingBorderButton({children,className="",...props}){return el("button",{...props,className:"aceternity-moving-border "+className},el("span",null,children))}
+function MovingBorder({children,duration=3000,rx="30%",ry="30%"}){
+ const pathRef=React.useRef(null);
+ const progress=useMotionValue(0);
+ useAnimationFrame(time=>{const length=pathRef.current?.getTotalLength();if(length){const speed=length/duration;progress.set((time*speed)%length)}});
+ const x=useTransform(progress,value=>pathRef.current?.getPointAtLength(value).x||0);
+ const y=useTransform(progress,value=>pathRef.current?.getPointAtLength(value).y||0);
+ const transform=useTransform([x,y],values=>"translateX("+values[0]+"px) translateY("+values[1]+"px) translateX(-50%) translateY(-50%)");
+ return el(React.Fragment,null,
+  el("svg",{xmlns:"http://www.w3.org/2000/svg",preserveAspectRatio:"none",className:"aceternity-border-svg",width:"100%",height:"100%"},el("rect",{fill:"none",width:"100%",height:"100%",rx,ry,ref:pathRef})),
+  el(motion.div,{style:{position:"absolute",top:0,left:0,display:"inline-block",transform}},children)
+ );
+}
+function MovingBorderButton({children,className="",style={},...props}){
+ return el("button",{...props,className:"aceternity-moving-border "+className,style:{...style,borderRadius:style.borderRadius||"12px"}},
+  el("div",{className:"aceternity-moving-border-track",style:{borderRadius:"12px"}},el(MovingBorder,{duration:3000,rx:"30%",ry:"30%"},el("div",{className:"aceternity-moving-border-glow"}))),
+  el("div",{className:"aceternity-moving-border-content",style:{borderRadius:"11px"}},children)
+ );
+}
 \nfunction Brand(){return el("div",{className:"brand"},el("div",{className:"mark"},"H"),el("div",null,el("strong",null,"HARMONIA"),el("small",null,"GLOBAL INTELLIGENCE")))}
 function App(){const settings=location.pathname==="/settings";const[cfg,Q]=useState(null),[email,E]=useState(""),[pass,P]=useState(""),[signup,S]=useState(false),[busy,B]=useState(false),[msg,M]=useState(""),[err,X]=useState(false),[cred,C]=useState(null),[token,T]=useState(""),[detail,D]=useState("正在讀取憑據狀態…"),[work,W]=useState("");
 useEffect(()=>{fetch("/api/public-config").then(r=>r.json()).then(Q).catch(()=>{X(true);M("無法載入登入設定。")})},[]);
