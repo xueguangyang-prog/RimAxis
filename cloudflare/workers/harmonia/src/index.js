@@ -14,7 +14,7 @@ const PAGE=String.raw`<!doctype html><html lang="zh-Hant"><head><meta charset="u
 .aceternity-moving-border-glow{width:76px;height:76px;background:radial-gradient(#0ea5e9 40%,transparent 62%);opacity:.9}
 .aceternity-moving-border-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2);padding:0 18px;color:white}
 @media(prefers-reduced-motion:reduce){.aceternity-beams{opacity:.16}}
-</style></head><body><div id="root"></div><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.3.1","react-dom":"https://esm.sh/react-dom@18.3.1"}}</script><script type="module">
+</style></head><body><div id="root"></div><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.3.1","react/":"https://esm.sh/react@18.3.1/","react-dom":"https://esm.sh/react-dom@18.3.1","react-dom/":"https://esm.sh/react-dom@18.3.1/"}}</script><script type="module">
 import React,{useEffect,useState}from"https://esm.sh/react@18.3.1";import{createRoot}from"https://esm.sh/react-dom@18.3.1/client?external=react";import{motion,useAnimationFrame,useMotionValue,useTransform}from"https://esm.sh/motion@12.23.24/react?external=react";
 const el=React.createElement;document.title=location.pathname==="/settings"?"Harmonia｜API 連線設定":"Harmonia｜登入";
 
