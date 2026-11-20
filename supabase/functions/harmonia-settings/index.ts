@@ -6,7 +6,9 @@ const PUBLISHABLE_KEYS = (() => {
 })();
 const PUBLISHABLE_KEY = PUBLISHABLE_KEYS.default || ANON_KEY;
 
-const corsHeaders = {"access-control-allow-origin":"https://ehzdoevqqmmtetulcpbo.supabase.co","access-control-allow-headers":"authorization, apikey, content-type","access-control-allow-methods":"GET, POST, PUT, DELETE, OPTIONS"};
+const APP_ORIGIN = "https://harmonia.xg-y-52f.workers.dev";
+function originAllowed(req){const origin=req.headers.get("origin");return !origin||origin===APP_ORIGIN}
+const corsHeaders = {"access-control-allow-origin":APP_ORIGIN,"access-control-allow-headers":"authorization, apikey, content-type","access-control-allow-methods":"GET, POST, PUT, DELETE, OPTIONS"};
 function reply(data,status=200){return new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store",...corsHeaders}})}
 function b64(bytes){return btoa(String.fromCharCode(...new Uint8Array(bytes)))}
 function fromB64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
@@ -41,6 +43,7 @@ async function admin(path,method="GET",body=null){
  return r.status===204?null:await r.json().catch(()=>null);
 }
 async function handleSession(req){
+ if(!originAllowed(req))return reply({error:"來源不允許。"},403);
  if(req.method==="DELETE")return new Response(JSON.stringify({signedOut:true}),{status:200,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store","set-cookie":"harmonia_session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0"}});
  if(req.method!=="POST")return reply({error:"Method not allowed"},405);
  const user=await currentUser(req);if(!user)return reply({error:"登入驗證失敗。"},401);
@@ -49,6 +52,7 @@ async function handleSession(req){
  return new Response(JSON.stringify({signedIn:true}),{status:200,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store","set-cookie":"harmonia_session="+encodeURIComponent(token)+"; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age="+maxAge}});
 }
 async function handleApi(req,path){
+ if(["POST","PUT","DELETE"].includes(req.method)&&!originAllowed(req))return reply({error:"來源不允許。"},403);
  const user=await currentUser(req);if(!user)return reply({error:"登入已失效，請重新登入。"},401);
  const owner=encodeURIComponent(user.id);
  if(path==="/api/credentials"&&req.method==="GET"){
