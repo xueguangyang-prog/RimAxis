@@ -4,7 +4,8 @@ Harmonia 全球轮毂行业潜客发现平台。
 
 ## 生产入口
 
-- **API 密钥设置中心**：https://harmonia.xg-y-52f.workers.dev
+- **登录入口**：https://harmonia.xg-y-52f.workers.dev/login
+- **API 密钥设置中心**：https://harmonia.xg-y-52f.workers.dev/settings
 - **应用服务**：Supabase Edge Function `harmonia-settings`
 - **数据库项目**：`ehzdoevqqmmtetulcpbo`
 
