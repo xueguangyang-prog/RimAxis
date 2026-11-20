@@ -32,7 +32,7 @@ label{display:block;font-size:12px;color:#d8d3e8;margin:22px 0 9px}input{width:1
 <script>
 const SUPABASE_URL="https://ehzdoevqqmmtetulcpbo.supabase.co";
 const SUPABASE_KEY="__PUBLISHABLE_KEY__";
-const API_BASE=location.pathname.replace(/\/$/,"");
+const API_BASE=(location.pathname.endsWith("/login")||location.pathname.endsWith("/settings"))?location.pathname.slice(0,location.pathname.lastIndexOf("/")):"";
 let accessToken="";let signUpMode=false;
 const $=id=>document.getElementById(id);
 function setMessage(t,bad=false){$("message").textContent=t;$("message").style.color=bad?"#a2191f":"#525252"}
@@ -66,7 +66,7 @@ async function currentUser(req){
  let auth=req.headers.get("authorization")||"";
  if(!auth.startsWith("Bearer ")){
   const cookie=req.headers.get("cookie")||"";
-  const match=cookie.match(/(?:^|;\\s*)harmonia_session=([^;]+)/);
+  const match=cookie.match(/(?:^|;\s*)harmonia_session=([^;]+)/);
   if(match)auth="Bearer "+decodeURIComponent(match[1]);
  }
  if(!auth.startsWith("Bearer "))return null;
