@@ -52,7 +52,8 @@ function MovingBorderButton({children,className="",style={},...props}){
   el("div",{className:"aceternity-moving-border-content",style:{borderRadius:"11px"}},children)
  );
 }
-\nfunction Brand(){return el("div",{className:"brand"},el("div",{className:"mark"},"H"),el("div",null,el("strong",null,"HARMONIA"),el("small",null,"GLOBAL INTELLIGENCE")))}
+
+function Brand(){return el("div",{className:"brand"},el("div",{className:"mark"},"H"),el("div",null,el("strong",null,"HARMONIA"),el("small",null,"GLOBAL INTELLIGENCE")))}
 function App(){const settings=location.pathname==="/settings";const[cfg,Q]=useState(null),[email,E]=useState(""),[pass,P]=useState(""),[signup,S]=useState(false),[busy,B]=useState(false),[msg,M]=useState(""),[err,X]=useState(false),[cred,C]=useState(null),[token,T]=useState(""),[detail,D]=useState("正在讀取憑據狀態…"),[work,W]=useState("");
 useEffect(()=>{fetch("/api/public-config").then(r=>r.json()).then(Q).catch(()=>{X(true);M("無法載入登入設定。")})},[]);
 async function api(path,opt={}){const r=await fetch("/api"+path,{...opt,credentials:"same-origin",headers:{"content-type":"application/json",...(opt.headers||{})}});const d=await r.json().catch(()=>({error:"伺服器回應格式錯誤"}));if(!r.ok)throw Error(d.error||"請求失敗");return d}
