@@ -42,4 +42,4 @@
 
 - 本次生产部署完成的是 API 密钥管理中心，不代表全球潜客发现采集引擎已经完成。
 - 登录依赖当前 Supabase Auth 项目配置；如项目启用了邮箱确认，新用户须先完成邮箱验证。
-- 2026-11-20：生产 Edge Function 已升级至 v11，并与仓库 API-only 源码对齐。数据库已确认 `api_credentials` 与 `api_credential_events` 均启用 RLS，凭据读写策略按 `auth.uid() = owner_id` 隔离。Supabase 安全顾问目前报告一项 Auth 警告：泄露密码保护未启用。生产浏览器在本轮验收请求触发 Cloudflare Browser Rendering 429 限流，因此本次未能在 v11 发布后完成线上页面和真实用户凭据端到端验收；不得将其标记为已通过。
+- 2026-11-20：生产 Edge Function 已升级至 v11，并与仓库 API-only 源码对齐。数据库已确认 `api_credentials` 与 `api_credential_events` 均启用 RLS，凭据读写策略按 `auth.uid() = owner_id` 隔离。新增迁移 `20261120122258_tighten_harmonia_credential_table_grants.sql`，撤销普通用户多余的 TRUNCATE、TRIGGER、REFERENCES 等权限，并经 SQL 回查确认权限已收紧。Supabase 安全顾问目前报告一项 Auth 警告：泄露密码保护未启用。生产浏览器在本轮验收请求触发 Cloudflare Browser Rendering 429 限流，因此本次未能在 v11 发布后完成线上页面和真实用户凭据端到端验收；不得将其标记为已通过。
