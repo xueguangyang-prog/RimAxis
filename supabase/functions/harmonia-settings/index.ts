@@ -113,7 +113,7 @@ Deno.serve(async(req)=>{
  const url=new URL(req.url);let path=url.pathname;const routePrefixes=["/functions/v1/harmonia-settings","/harmonia-settings"];for(const prefix of routePrefixes){if(path===prefix){path="/";break}if(path.startsWith(prefix+"/")){path=path.slice(prefix.length)||"/";break}}if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers:corsHeaders});
  if(req.method==="GET"&&path==="/"){
-  return new Response(html.replace("__PUBLISHABLE_KEY__",PUBLISHABLE_KEY),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://ehzdoevqqmmtetulcpbo.supabase.co; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'"}});
+  return new Response(html.replace("__PUBLISHABLE_KEY__",PUBLISHABLE_KEY),{status:200,headers:new Headers({"Content-Type":"text/html; charset=UTF-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff","Referrer-Policy":"no-referrer","Content-Security-Policy":"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://ehzdoevqqmmtetulcpbo.supabase.co; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'"})});
  }
  if(path.startsWith("/api/")){
   if(!["GET","POST","PUT","DELETE"].includes(req.method))return reply({error:"Method not allowed"},405);
