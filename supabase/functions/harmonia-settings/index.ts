@@ -45,8 +45,8 @@ async function loadStatus(){try{const d=await api("/api/credentials");const c=d.
 $("saveVerify").addEventListener("click",async()=>{const token=$("apiToken").value.trim();if(!token){setMessage("請先輸入 API Token。",true);return}$("saveVerify").disabled=true;setMessage("正在加密保存並驗證…");try{await api("/api/credentials",{method:"PUT",body:JSON.stringify({token})});$("apiToken").value="";const v=await api("/api/credentials/verify",{method:"POST"});setMessage(v.valid?"密鑰保存成功，連線驗證通過。":"密鑰已保存，但驗證未通過。",!v.valid);await loadStatus()}catch(e){setMessage(e.message,true);await loadStatus()}finally{$("saveVerify").disabled=false}});
 $("verify").addEventListener("click",async()=>{$("verify").disabled=true;setMessage("正在驗證…");try{const d=await api("/api/credentials/verify",{method:"POST"});setMessage(d.valid?"連線驗證通過。":"驗證失敗。",!d.valid);await loadStatus()}catch(e){setMessage(e.message,true)}finally{$("verify").disabled=false}});
 $("remove").addEventListener("click",async()=>{if(!confirm("確定刪除此服務的 API 密鑰？"))return;$("remove").disabled=true;try{await api("/api/credentials",{method:"DELETE"});setMessage("密鑰已刪除。");$("apiToken").value="";await loadStatus()}catch(e){setMessage(e.message,true)}finally{$("remove").disabled=false}});
-$("logout").addEventListener("click",()=>{await fetch(API_BASE+"/api/session",{method:"DELETE",credentials:"same-origin"});location.replace(API_BASE+"/login")});
-</script></body></html>`;
+$("logout").addEventListener("click",async()=>{await fetch(API_BASE+"/api/session",{method:"DELETE",credentials:"same-origin"});location.replace(API_BASE+"/login")});
+if(location.pathname.endsWith("/settings"))loadStatus();\n</script></body></html>`;
 
 const corsHeaders = {"access-control-allow-origin":"https://ehzdoevqqmmtetulcpbo.supabase.co","access-control-allow-headers":"authorization, apikey, content-type","access-control-allow-methods":"GET, POST, PUT, DELETE, OPTIONS"};
 function reply(data,status=200){return new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store",...corsHeaders}})}
