@@ -1,83 +1,74 @@
-const PAGE=String.raw`<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080712"><title>Harmonia Workspace</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%238b5cf6%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-size=%2740%27 text-anchor=%27middle%27 fill=%27white%27%3EH%3C/text%3E%3C/svg%3E"><style>
-:root{font-family:Inter,system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#f5f3ff;background:#080712;--muted:#9e98b3}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 70% 55% at 50% -10%,#44216b88,transparent 70%),radial-gradient(ellipse 45% 40% at 100% 65%,#07598533,transparent 70%),#080712}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(#ffffff18 1px,transparent 1px),linear-gradient(90deg,#ffffff18 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(ellipse,#000,transparent 80%)}button,input{font:inherit}.app{position:relative;z-index:1;min-height:100vh}.wrap{min-height:100vh;display:grid;place-items:center;padding:24px 16px}.auth{width:min(100%,450px);padding:32px 28px;border-radius:24px;border:1px solid #a78bfa44;background:linear-gradient(145deg,#1b1630f5,#0d0d1cf5);box-shadow:0 30px 100px #0009,inset 0 1px #ffffff18;position:relative;overflow:hidden}.auth:before,.panel:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(500px circle at 50% 0,#8b5cf622,transparent 65%)}.brand{display:flex;align-items:center;gap:11px;margin-bottom:34px}.mark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;color:#080712;font-weight:900;background:linear-gradient(135deg,#c4b5fd,#818cf8 55%,#67e8f9);box-shadow:0 0 30px #8b5cf655}.brand strong{font-size:14px;letter-spacing:.14em}.brand small{display:block;font-size:9px;color:#88819f;letter-spacing:.2em;margin-top:3px}.eyebrow{font-size:10px;color:#c4b5fd;letter-spacing:.23em;font-weight:750}.title{font-size:clamp(29px,7vw,38px);letter-spacing:-.045em;margin:12px 0;color:white}.desc{font-size:13px;line-height:1.8;color:var(--muted);margin:0 0 25px}.field{display:block;margin:18px 0}.field span{display:block;font-size:12px;color:#d8d2e8;margin-bottom:8px}.input{height:49px;width:100%;border:1px solid #a78bfa33;border-radius:11px;background:#080816;color:white;padding:0 14px;outline:none}.input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #8b5cf633}.input::placeholder{color:#716b83}.primary{height:47px;border:1px solid #c4b5fd77;border-radius:11px;padding:0 18px;color:white;font-weight:700;font-size:12px;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2);box-shadow:0 8px 28px #6366f133;cursor:pointer}.primary:disabled{opacity:.5}.wide{width:100%;margin-top:8px}.link{border:0;background:none;color:#c4b5fd;font-size:12px;padding:13px;cursor:pointer}.foot{border-top:1px solid #ffffff12;margin-top:22px;padding-top:16px;font-size:11px;line-height:1.7;color:#77718c}.feedback{font-size:12px;color:#c4b5fd;line-height:1.6;min-height:18px;margin-top:12px}.error{color:#fda4af}.workspace{min-height:100vh;display:grid;grid-template-columns:245px 1fr}.side{height:100vh;position:sticky;top:0;padding:24px 17px;background:#090916c9;border-right:1px solid #ffffff12;backdrop-filter:blur(20px)}.side .brand{margin:0 7px 54px}.navcap{font-size:10px;color:#716b85;letter-spacing:.2em;padding:0 12px 12px}.nav{padding:13px;border:1px solid #a78bfa33;border-radius:12px;background:linear-gradient(100deg,#7c3aed33,#0891b21a);font-size:13px}.sidefoot{position:absolute;bottom:24px;left:22px;color:#716b85;font-size:11px;line-height:1.8}.main{min-width:0}.top{height:66px;border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,46px);background:#09091688;backdrop-filter:blur(16px)}.crumb{font-size:12px;color:#9992ad}.logout{background:#ffffff09;border:1px solid #ffffff20;border-radius:9px;color:#dcd6ec;padding:8px 13px;font-size:11px}.content{width:min(100%,1000px);margin:auto;padding:clamp(28px,5vw,54px) clamp(18px,4vw,46px)}.kicker{font-size:10px;letter-spacing:.23em;color:#b9a6ff;font-weight:750}.page-title{font-size:clamp(30px,5vw,40px);letter-spacing:-.045em;margin:10px 0;color:#fff}.page-desc{font-size:13px;line-height:1.9;color:#9993ae;max-width:650px;margin:0 0 30px}.panel{position:relative;overflow:hidden;padding:clamp(20px,3vw,30px);border:1px solid #a78bfa33;border-radius:21px;background:linear-gradient(145deg,#1b1630e8,#0d0d1cf5);box-shadow:0 24px 70px #0007,inset 0 1px #ffffff0b}.panelhead{position:relative;display:flex;justify-content:space-between;gap:16px;margin-bottom:22px}.panelhead h2{font-size:17px;margin:0 0 7px}.hint{font-size:11px;color:#8f89a6;line-height:1.7}.pill{font-size:10px;border:1px solid #ffffff24;background:#ffffff09;border-radius:99px;padding:7px 11px;color:#c8c2d9;white-space:nowrap;height:max-content}.good{color:#86efac;border-color:#22c55e66}.bad{color:#fda4af;border-color:#fb718566}.provider{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #ffffff12;border-radius:14px;background:#08081688;margin-bottom:22px}.picon{width:40px;height:40px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#8b5cf633,#0891b233);color:#c4b5fd;font-size:20px}.pname{font-size:13px;font-weight:700}.pdesc{font-size:10px;color:#827c98;margin-top:4px}.provider .pill{margin-left:auto}.help{font-size:11px;line-height:1.8;color:#89839e;margin-top:9px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.secondary,.danger{height:42px;border-radius:10px;padding:0 15px;font-size:11px;font-weight:650;cursor:pointer}.secondary{background:#ffffff09;border:1px solid #ffffff22;color:#ddd7eb}.danger{background:#e11d4810;border:1px solid #fb718544;color:#fda4af}.detail{font-size:11px;color:#aaa4ba;line-height:1.8;margin-top:16px}.security{display:flex;gap:11px;padding:14px;border-radius:12px;background:#0891b20c;border:1px solid #67e8f922;color:#aaa7bb;font-size:11px;line-height:1.8;margin-top:17px}.security b{color:#c4b5fd}.footer{font-size:10px;color:#6f6984;margin-top:22px}@media(max-width:740px){.workspace{grid-template-columns:1fr}.side{position:relative;height:auto;padding:12px 16px;border:0;border-bottom:1px solid #ffffff12}.side .brand{margin:0 4px}.mark{width:35px;height:35px}.navcap,.nav,.sidefoot{display:none}.top{height:54px;padding:0 17px}.content{padding:27px 16px 40px}.panel{padding:20px 16px;border-radius:17px}.panelhead{flex-direction:column;gap:10px}.provider{padding:12px;gap:9px}.provider .pill{font-size:9px;padding:6px 8px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions .primary{grid-column:1/-1}.auth{padding:27px 21px}}@media(max-width:360px){.actions{grid-template-columns:1fr}.actions .primary{grid-column:auto}}
-
-/* Aceternity UI component layer: BackgroundBeams, Spotlight and MovingBorder */
-.wrap,.workspace{position:relative;isolation:isolate}
-.aceternity-beams{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.42;overflow:hidden}
-.aceternity-beams svg{width:100%;height:100%}
-.aceternity-spotlight{position:absolute;inset:-1px;pointer-events:none;z-index:0;overflow:hidden;border-radius:inherit;transition:opacity .28s ease;mix-blend-mode:screen}
-.auth,.panel{isolation:isolate}
-.auth>*:not(.aceternity-spotlight),.panel>*:not(.aceternity-spotlight){position:relative;z-index:1}
-.aceternity-moving-border{position:relative;isolation:isolate;overflow:hidden;padding:1px;border:0;background:transparent;display:inline-flex;align-items:stretch;justify-content:stretch}
-.aceternity-moving-border-track{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.aceternity-border-svg{position:absolute;inset:0;overflow:visible}
-.aceternity-moving-border-glow{width:76px;height:76px;background:radial-gradient(#0ea5e9 40%,transparent 62%);opacity:.9}
-.aceternity-moving-border-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2);padding:0 18px;color:white}
-@media(prefers-reduced-motion:reduce){.aceternity-beams{opacity:.16}}
-</style></head><body><div id="root"></div><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.3.1","react/":"https://esm.sh/react@18.3.1/","react-dom":"https://esm.sh/react-dom@18.3.1","react-dom/":"https://esm.sh/react-dom@18.3.1/"}}</script><script type="module">
-import React,{useEffect,useState}from"https://esm.sh/react@18.3.1";import{createRoot}from"https://esm.sh/react-dom@18.3.1/client?external=react";import{motion,useAnimationFrame,useMotionValue,useTransform}from"https://esm.sh/motion@12.23.24/react?external=react";
-const el=React.createElement;document.title=location.pathname==="/settings"?"Harmonia｜API 連線設定":"Harmonia｜登入";
-
-const beamPaths=[
- "M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875",
- "M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867",
- "M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859",
- "M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851",
- "M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843",
- "M-345 -229C-345 -229 -277 176 187 303C651 430 719 835 719 835",
- "M-338 -237C-338 -237 -270 168 194 295C658 422 726 827 726 827",
- "M-331 -245C-331 -245 -263 160 201 287C665 414 733 819 733 819"
-];
-function BackgroundBeams(){return el("div",{className:"aceternity-beams","aria-hidden":true},el("svg",{viewBox:"0 0 696 316",fill:"none",preserveAspectRatio:"xMidYMid slice"},
- el("defs",null,...beamPaths.map((_,i)=>el(motion.linearGradient,{id:"aceternity-gradient-"+i,key:"gradient-"+i,initial:{x1:"0%",x2:"0%",y1:"0%",y2:"0%"},animate:{x1:["0%","100%"],x2:["0%","95%"],y1:["0%","100%"],y2:["0%",(93+i)%100+"%"]},transition:{duration:12+i*1.3,ease:"easeInOut",repeat:Infinity,delay:i*.65}},
-  el("stop",{offset:"0%",stopColor:"#18CCFC",stopOpacity:"0"}),el("stop",{offset:"32.5%",stopColor:"#6344F5"}),el("stop",{offset:"100%",stopColor:"#AE48FF",stopOpacity:"0"})))),
- ...beamPaths.map((d,i)=>el("path",{key:"beam-"+i,d,stroke:"url(#aceternity-gradient-"+i+")",strokeOpacity:.48,strokeWidth:.7}))
- ))}
-function CardSpotlight({children,className="panel"}){
- const mouseX=useMotionValue(0),mouseY=useMotionValue(0),[hovering,setHovering]=useState(false);
- const maskImage=useTransform([mouseX,mouseY],values=>"radial-gradient(350px circle at "+values[0]+"px "+values[1]+"px, white, transparent 80%)");
- function move(event){const rect=event.currentTarget.getBoundingClientRect();mouseX.set(event.clientX-rect.left);mouseY.set(event.clientY-rect.top)}
- return el("section",{className,onMouseMove:move,onMouseEnter:()=>setHovering(true),onMouseLeave:()=>setHovering(false)},
-  el(motion.div,{className:"aceternity-spotlight","aria-hidden":true,style:{backgroundColor:"#8b5cf6",maskImage,opacity:hovering?1:0}}),
-  children
- );
-}
-function MovingBorder({children,duration=3000,rx="30%",ry="30%"}){
- const pathRef=React.useRef(null);
- const progress=useMotionValue(0);
- useAnimationFrame(time=>{const length=pathRef.current?.getTotalLength();if(length){const speed=length/duration;progress.set((time*speed)%length)}});
- const x=useTransform(progress,value=>pathRef.current?.getPointAtLength(value).x||0);
- const y=useTransform(progress,value=>pathRef.current?.getPointAtLength(value).y||0);
- const transform=useTransform([x,y],values=>"translateX("+values[0]+"px) translateY("+values[1]+"px) translateX(-50%) translateY(-50%)");
- return el(React.Fragment,null,
-  el("svg",{xmlns:"http://www.w3.org/2000/svg",preserveAspectRatio:"none",className:"aceternity-border-svg",width:"100%",height:"100%"},el("rect",{fill:"none",width:"100%",height:"100%",rx,ry,ref:pathRef})),
-  el(motion.div,{style:{position:"absolute",top:0,left:0,display:"inline-block",transform}},children)
- );
-}
-function MovingBorderButton({children,className="",style={},...props}){
- return el("button",{...props,className:"aceternity-moving-border "+className,style:{...style,borderRadius:style.borderRadius||"12px"}},
-  el("div",{className:"aceternity-moving-border-track",style:{borderRadius:"12px"}},el(MovingBorder,{duration:3000,rx:"30%",ry:"30%"},el("div",{className:"aceternity-moving-border-glow"}))),
-  el("div",{className:"aceternity-moving-border-content",style:{borderRadius:"11px"}},children)
- );
+async function hasValidSession(request) {
+  try {
+    const raw = request.headers.get("cookie") || "";
+    const part = raw.split(";").map(x => x.trim()).find(x => x.startsWith("harmonia_session="));
+    if (!part) return false;
+    const token = decodeURIComponent(part.slice("harmonia_session=".length));
+    const configResponse = await fetch("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings/api/public-config", { headers: { "cache-control": "no-store" } });
+    if (!configResponse.ok) return false;
+    const config = await configResponse.json();
+    if (!config.publishableKey || !config.supabaseUrl) return false;
+    const userResponse = await fetch(config.supabaseUrl + "/auth/v1/user", {
+      headers: { apikey: config.publishableKey, Authorization: "Bearer " + token }
+    });
+    return userResponse.ok;
+  } catch {
+    return false;
+  }
 }
 
-function Brand(){return el("div",{className:"brand"},el("div",{className:"mark"},"H"),el("div",null,el("strong",null,"HARMONIA"),el("small",null,"GLOBAL INTELLIGENCE")))}
-function App(){const settings=location.pathname==="/settings";const[cfg,Q]=useState(null),[email,E]=useState(""),[pass,P]=useState(""),[signup,S]=useState(false),[busy,B]=useState(false),[msg,M]=useState(""),[err,X]=useState(false),[cred,C]=useState(null),[loaded,L]=useState(false),[token,T]=useState(""),[detail,D]=useState("正在讀取憑據狀態…"),[work,W]=useState("");
-useEffect(()=>{fetch("/api/public-config").then(r=>r.json()).then(Q).catch(()=>{X(true);M("無法載入登入設定。")})},[]);
-async function api(path,opt={}){const r=await fetch("/api"+path,{...opt,credentials:"same-origin",headers:{"content-type":"application/json",...(opt.headers||{})}});const d=await r.json().catch(()=>({error:"伺服器回應格式錯誤"}));if(!r.ok)throw Error(d.error||"請求失敗");return d}
-async function refresh(){try{const d=await api("/credentials");C(d.credential||null);L(true);const c=d.credential;if(!c){D("尚未保存 API Token。");return}D((c.last_verified_at?"最近驗證："+new Date(c.last_verified_at).toLocaleString():"尚未驗證")+(c.last_error?" · "+c.last_error:"")+"。密鑰不會回傳至瀏覽器。")}catch(e){if(/登入已失效|401/.test(e.message)){location.replace("/login");return}D(e.message);X(true);L(true)}}
-useEffect(()=>{if(settings)refresh()},[settings]);
-async function submit(e){e.preventDefault();if(!cfg)return;B(true);M("正在安全驗證…");X(false);try{const r=await fetch((signup?"/auth/v1/signup":"/auth/v1/token?grant_type=password"),{method:"POST",headers:{apikey:cfg.publishableKey,"content-type":"application/json"},body:JSON.stringify({email,password:pass})});const d=await r.json();if(!r.ok)throw Error(d.msg||d.message||d.error_description||"登入失敗");if(!d.access_token){M("帳戶已建立，請依電子郵件完成驗證後登入。");return}await api("/session",{method:"POST",headers:{Authorization:"Bearer "+d.access_token}});location.assign("/settings")}catch(e){X(true);M(e.message)}finally{B(false)}}
-async function logout(){await api("/session",{method:"DELETE"}).catch(()=>{});location.replace("/login")}
-async function save(){if(token.trim().length<12){X(true);M("請輸入有效的 API Token。");return}W("save");M("正在加密保存並驗證…");X(false);try{await api("/credentials",{method:"PUT",body:JSON.stringify({token:token.trim()})});T("");const v=await api("/credentials/verify",{method:"POST"});M(v.valid?"密鑰保存成功，連線驗證通過。":"密鑰已保存，但驗證未通過。");X(!v.valid);await refresh()}catch(e){X(true);M(e.message);await refresh()}finally{W("")}}
-async function verify(){W("verify");M("正在重新驗證…");X(false);try{const v=await api("/credentials/verify",{method:"POST"});M(v.valid?"連線驗證通過。":"驗證未通過。");X(!v.valid);await refresh()}catch(e){X(true);M(e.message)}finally{W("")}}
-async function remove(){if(!confirm("確定刪除此 API 密鑰？"))return;W("remove");try{await api("/credentials",{method:"DELETE"});T("");M("API 密鑰已刪除。");X(false);await refresh()}catch(e){X(true);M(e.message)}finally{W("")}}
-const notice=msg?el("div",{className:"feedback"+(err?" error":""),role:"status"},msg):null;
-const logo=el(Brand);
-if(!settings)return el("main",{className:"wrap"},el(BackgroundBeams),el(CardSpotlight,{className:"auth"},logo,el("div",{className:"eyebrow"},"SECURE WORKSPACE"),el("h1",{className:"title"},signup?"建立你的工作空間":"歡迎回到 Harmonia"),el("p",{className:"desc"},signup?"建立帳戶以安全管理外部服務連線。":"登入後管理外部資料服務與 API 連線憑據。"),el("form",{onSubmit:submit},el("label",{className:"field"},el("span",null,"電子郵件"),el("input",{className:"input",type:"email",required:true,autoComplete:"username",placeholder:"name@company.com",value:email,onChange:e=>E(e.target.value)})),el("label",{className:"field"},el("span",null,"密碼"),el("input",{className:"input",type:"password",required:true,autoComplete:signup?"new-password":"current-password",placeholder:"輸入密碼",value:pass,onChange:e=>P(e.target.value)})),el(MovingBorderButton,{className:"primary wide",disabled:busy||!cfg},busy?"請稍候…":signup?"建立帳戶":"登入工作區")),el("div",{style:{textAlign:"center"}},el("button",{className:"link",onClick:()=>{S(!signup);M("");X(false)}},signup?"已有帳戶？返回登入":"尚未有帳戶？建立帳戶")),notice,el("div",{className:"foot"},"登入憑據由 Supabase Auth 驗證。API Token 不會儲存在瀏覽器本地，也不會顯示於網址。")));
-return el("div",{className:"workspace"},el(BackgroundBeams),el("aside",{className:"side"},logo,el("div",{className:"navcap"},"WORKSPACE"),el("div",{className:"nav"},"✧　API 連線設定"),el("div",{className:"sidefoot"},"Harmonia Workspace",el("br"),"安全管理外部服務憑據")),el("main",{className:"main"},el("header",{className:"top"},el("div",{className:"crumb"},"工作區　/　API 連線設定"),el("button",{className:"logout",onClick:logout},"登出")),el("div",{className:"content"},el("div",{className:"kicker"},"SETTINGS / INTEGRATIONS"),el("h1",{className:"page-title"},"API 連線設定"),el("p",{className:"page-desc"},"集中管理 Harmonia 外部資料服務的連線憑據。Token 僅在提交時傳送至伺服器，保存後不會再次顯示。"),el(CardSpotlight,{className:"panel"},el("div",{className:"panelhead"},el("div",null,el("h2",null,"外部服務憑據"),el("div",{className:"hint"},"管理資料發現服務的授權狀態")),el("span",{className:"pill "+(cred?.status==="verified"?"good":cred?.status==="verification_failed"?"bad":"")},cred?.status==="verified"?"已連線":cred?.status==="verification_failed"?"驗證失敗":cred?"已配置":loaded?"未配置":"讀取中")),el("div",{className:"provider"},el("div",{className:"picon"},"◎"),el("div",null,el("div",{className:"pname"},"採集服務 API"),el("div",{className:"pdesc"},"用於全球企業與地點資料發現")),el("span",{className:"pill"},"API TOKEN")),el("label",{className:"field"},el("span",null,"API Token"),el("input",{className:"input",type:"password",autoComplete:"new-password",placeholder:"輸入新的 API Token",value:token,onChange:e=>T(e.target.value)})),el("div",{className:"help"},"保存後由伺服器使用 AES-256-GCM 加密。主密鑰由 Supabase Vault 管理；瀏覽器不保存 Token。"),el("div",{className:"actions"},el(MovingBorderButton,{className:"primary",disabled:!!work||!token.trim(),onClick:save},work==="save"?"保存中…":"保存並驗證"),el("button",{className:"secondary",disabled:!!work||!cred,onClick:verify},work==="verify"?"驗證中…":"重新驗證"),el("button",{className:"danger",disabled:!!work||!cred,onClick:remove},work==="remove"?"刪除中…":"刪除密鑰")),el("div",{className:"detail"},detail),notice,el("div",{className:"security"},el("div",null,"◇"),el("div",null,el("b",null,"安全提示"),el("br"),"驗證失敗不會啟動採集任務；密鑰狀態與採集任務分開管理。"))),el("div",{className:"footer"},"HARMONIA WORKSPACE · PRIVATE CONNECTIONS"))));
+function noStore(headers) {
+  const next = new Headers(headers);
+  next.set("cache-control", "no-store");
+  next.set("x-content-type-options", "nosniff");
+  next.set("referrer-policy", "no-referrer");
+  return next;
 }
-createRoot(document.getElementById("root")).render(React.createElement(motion.div,{initial:{opacity:0,y:8},animate:{opacity:1,y:0},transition:{duration:.28}},React.createElement(App)));
-</script></body></html>`;
-async function hasValidSession(request){try{const raw=request.headers.get('cookie')||'';const part=raw.split(';').map(x=>x.trim()).find(x=>x.startsWith('harmonia_session='));if(!part)return false;const token=decodeURIComponent(part.slice('harmonia_session='.length));const cr=await fetch('https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings/api/public-config',{headers:{'cache-control':'no-store'}});if(!cr.ok)return false;const cfg=await cr.json();if(!cfg.publishableKey||!cfg.supabaseUrl)return false;const ur=await fetch(cfg.supabaseUrl+'/auth/v1/user',{headers:{apikey:cfg.publishableKey,Authorization:'Bearer '+token}});return ur.ok}catch{return false}}
-export default {async fetch(request){const u=new URL(request.url);if(u.pathname==="/health")return new Response("ok",{headers:{"content-type":"text/plain; charset=utf-8"}});if(u.pathname==="/")return Response.redirect(new URL("/login",request.url),302);if(request.method==="GET"&&["/login","/settings"].includes(u.pathname)){if(u.pathname==="/settings"&&!await hasValidSession(request))return Response.redirect(new URL("/login",request.url),303);return new Response(PAGE,{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self' data: https://esm.sh; base-uri 'none'; frame-ancestors 'none'"}});}if(["/auth/v1/signup","/auth/v1/token"].includes(u.pathname)&&request.method==="POST"){const origin=request.headers.get("origin");if(origin&&origin!==u.origin)return new Response("Forbidden",{status:403});const target=new URL("https://ehzdoevqqmmtetulcpbo.supabase.co"+u.pathname);target.search=u.search;const headers=new Headers(request.headers);headers.delete("host");const upstream=await fetch(new Request(target.toString(),{method:"POST",headers,body:request.body,redirect:"manual"}));const responseHeaders=new Headers(upstream.headers);responseHeaders.set("cache-control","no-store");return new Response(upstream.body,{status:upstream.status,statusText:upstream.statusText,headers:responseHeaders})}if(u.pathname.startsWith("/api/")){const t=new URL("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings"+u.pathname);t.search=u.search;const hs=new Headers(request.headers);hs.delete("host");const r=await fetch(new Request(t.toString(),{method:request.method,headers:hs,body:["GET","HEAD"].includes(request.method)?undefined:request.body,redirect:"manual"}));const hh=new Headers(r.headers);hh.set("cache-control","no-store");return new Response(r.body,{status:r.status,statusText:r.statusText,headers:hh})}return new Response("Not found",{status:404})}};
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === "/health") {
+      return new Response("ok", { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } });
+    }
+    if (url.pathname === "/") return Response.redirect(new URL("/login", request.url), 302);
+
+    if (request.method === "GET" && ["/login", "/settings"].includes(url.pathname)) {
+      if (url.pathname === "/settings" && !(await hasValidSession(request))) {
+        return Response.redirect(new URL("/login", request.url), 303);
+      }
+      const assetRequest = new Request(new URL("/", request.url), request);
+      const response = await env.ASSETS.fetch(assetRequest);
+      const headers = noStore(response.headers);
+      headers.set("content-security-policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self' data:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
+
+    if (["/auth/v1/signup", "/auth/v1/token"].includes(url.pathname) && request.method === "POST") {
+      const origin = request.headers.get("origin");
+      if (origin && origin !== url.origin) return new Response("Forbidden", { status: 403 });
+      const target = new URL("https://ehzdoevqqmmtetulcpbo.supabase.co" + url.pathname);
+      target.search = url.search;
+      const headers = new Headers(request.headers);
+      headers.delete("host");
+      const upstream = await fetch(new Request(target.toString(), { method: "POST", headers, body: request.body, redirect: "manual" }));
+      return new Response(upstream.body, { status: upstream.status, statusText: upstream.statusText, headers: noStore(upstream.headers) });
+    }
+
+    if (url.pathname.startsWith("/api/")) {
+      const target = new URL("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings" + url.pathname);
+      target.search = url.search;
+      const headers = new Headers(request.headers);
+      headers.delete("host");
+      const upstream = await fetch(new Request(target.toString(), {
+        method: request.method,
+        headers,
+        body: ["GET", "HEAD"].includes(request.method) ? undefined : request.body,
+        redirect: "manual"
+      }));
+      return new Response(upstream.body, { status: upstream.status, statusText: upstream.statusText, headers: noStore(upstream.headers) });
+    }
+
+    return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
+  }
+};
