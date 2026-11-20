@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://ehzdoevqqmmtetulcpbo.supabase.co";
-const SUPABASE_KEY = "";
+const SUPABASE_KEY = (env) => env.SUPABASE_PUBLISHABLE_KEY;
 
 const html = String.raw`<!doctype html>
 <html lang="zh-Hant">
@@ -106,26 +106,26 @@ async function decryptToken(row,env) {
  const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv},key,data);
  return new TextDecoder().decode(plain);
 }
-async function supa(path,token,options={}) {
- const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{...options,headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+token,"Content-Type":"application/json",...(options.headers||{})}});
+async function supa(path,token,options={},env) {
+ const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{...options,headers:{apikey:SUPABASE_KEY(env),Authorization:"Bearer "+token,"Content-Type":"application/json",...(options.headers||{})}});
  if(!r.ok) throw new Error("database_request_failed");
  return r;
 }
-async function requireUser(request) {
+async function requireUser(request,env) {
  const bearer=request.headers.get("authorization")||"";
  if(!bearer.startsWith("Bearer ")) throw new Error("unauthorized");
  const token=bearer.slice(7);
- const r=await fetch(SUPABASE_URL+"/auth/v1/user",{headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+token}});
+ const r=await fetch(SUPABASE_URL+"/auth/v1/user",{headers:{apikey:SUPABASE_KEY(env),Authorization:"Bearer "+token}});
  if(!r.ok) throw new Error("unauthorized");
  const user=await r.json(); if(!user.id) throw new Error("unauthorized");
  return {token,user};
 }
 async function handleApi(request,env,url) {
  let auth;
- try { auth=await requireUser(request); } catch { return json({error:"登入已失效，請重新登入。"},401); }
+ try { auth=await requireUser(request,env); } catch { return json({error:"登入已失效，請重新登入。"},401); }
  const token=auth.token;
  if(url.pathname==="/api/credentials" && request.method==="GET"){
-  const r=await supa("api_credentials?select=provider,status,last_verified_at,last_error,updated_at&provider=eq.apify&limit=1",token);
+  const r=await supa("api_credentials?select=provider,status,last_verified_at,last_error,updated_at&provider=eq.apify&limit=1",token,{},env,{},env);
   const rows=await r.json(); return json({credential:rows[0]||null});
  }
  if(url.pathname==="/api/credentials" && request.method==="PUT"){
