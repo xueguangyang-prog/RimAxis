@@ -24,3 +24,15 @@
 ## 发布结论
 
 **本记录不代表 Harmonia 前端已完成生产验收，也不代表整个潜客发现系统已生产就绪。** 在完成前端构建工程、解除浏览器验收限流并通过真实用户端到端测试前，不应把 Worker 新版本切换到 100% 生产流量。
+
+
+## Cloudflare production deployment prerequisite
+
+The Vite/Tailwind build is verified by GitHub Actions. Production deployment uses the repository workflow `.github/workflows/harmonia-production.yml` and requires two repository Actions secrets (never commit or paste credentials into chat):
+
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API token with Workers Scripts:Edit and Workers Assets:Edit permissions for the Harmonia account.
+- `CLOUDFLARE_ACCOUNT_ID`: the Cloudflare account identifier used by the existing `harmonia` Worker.
+
+Add them in GitHub → RimAxis → Settings → Secrets and variables → Actions → New repository secret. After both secrets are saved, run the workflow “Harmonia production build” (or push a frontend change). The workflow builds, uploads the artifact, deploys the Worker and static assets, then the production deployment must be checked for 100% traffic before declaring success.
+
+Current limitation (2026-11-20): the GitHub Actions deployment attempt built successfully but failed because both Cloudflare secrets were empty in the runner environment. Cloudflare production traffic therefore remains on the previous Worker version. The connected Cloudflare account itself remains accessible through the Cloudflare integration, but its API token is not exposed to GitHub Actions or to this repository.
