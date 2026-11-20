@@ -89,6 +89,7 @@ async function handleApi(req,path){
   if(typeof body.token!=="string"||body.token.trim().length<12||body.token.length>4096)return reply({error:"API Token 格式不正確。"},400);
   const enc=await encryptValue(body.token.trim());
   await admin("api_credentials?on_conflict=owner_id,provider","POST",{owner_id:user.id,provider:"apify",...enc,key_version:1,status:"saved",last_verified_at:null,last_error:null,updated_at:new Date().toISOString()});
+  await admin("api_credential_events","POST",{owner_id:user.id,provider:"apify",event_type:"saved",metadata:{}});
   return reply({saved:true});
  }
  if(path==="/api/credentials/verify"&&req.method==="POST"){
@@ -98,9 +99,11 @@ async function handleApi(req,path){
   try{const upstream=await fetch("https://api.apify.com/v2/users/me",{headers:{Authorization:"Bearer "+secret}});valid=upstream.ok}catch{}
   const now=new Date().toISOString();
   await admin("api_credentials?owner_id=eq."+owner+"&provider=eq.apify","PATCH",{status:valid?"verified":"verification_failed",last_verified_at:now,last_error:valid?null:"Token 無效、已撤銷或上游服務暫時不可用。",updated_at:now});
+  await admin("api_credential_events","POST",{owner_id:user.id,provider:"apify",event_type:valid?"verified":"verification_failed",metadata:{}});
   return reply({valid});
  }
  if(path==="/api/credentials"&&req.method==="DELETE"){
+  await admin("api_credential_events","POST",{owner_id:user.id,provider:"apify",event_type:"deleted",metadata:{}});
   await admin("api_credentials?owner_id=eq."+owner+"&provider=eq.apify","DELETE");
   return reply({deleted:true});
  }
