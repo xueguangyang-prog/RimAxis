@@ -2,28 +2,23 @@ export default {
   async fetch(request) {
     const incoming = new URL(request.url);
     if (incoming.pathname === "/health") {
-      return new Response("ok", { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" } });
+      return new Response("ok", {headers: {"content-type":"text/plain; charset=utf-8","cache-control":"no-store"}});
     }
-    const upstream = new URL("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings");
-    upstream.pathname += incoming.pathname === "/" ? "" : incoming.pathname;
-    upstream.search = incoming.search;
-    const headers = new Headers(request.headers);
-    headers.delete("host");
-    const upstreamResponse = await fetch(new Request(upstream.toString(), {
+    const target = new URL("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings");
+    if (incoming.pathname !== "/") target.pathname += incoming.pathname;
+    target.search = incoming.search;
+    const upstream = await fetch(new Request(target.toString(), {
       method: request.method,
-      headers,
-      body: ["GET", "HEAD"].includes(request.method) ? undefined : request.body,
+      headers: request.headers,
+      body: ["GET","HEAD"].includes(request.method) ? undefined : request.body,
       redirect: "manual"
     }));
-    const responseHeaders = new Headers(upstreamResponse.headers);
-    if (request.method === "GET" && (incoming.pathname === "/" || incoming.pathname === "")) {
-      responseHeaders.set("Content-Type", "text/html; charset=UTF-8");
-      responseHeaders.set("Cache-Control", "no-store");
+    const headers = new Headers(upstream.headers);
+    if (request.method === "GET" && incoming.pathname === "/") {
+      headers.set("content-type", "text/html; charset=utf-8");
+      headers.set("cache-control", "no-store");
+      headers.set("x-content-type-options", "nosniff");
     }
-    return new Response(upstreamResponse.body, {
-      status: upstreamResponse.status,
-      statusText: upstreamResponse.statusText,
-      headers: responseHeaders
-    });
+    return new Response(upstream.body, {status: upstream.status, statusText: upstream.statusText, headers});
   }
 };
