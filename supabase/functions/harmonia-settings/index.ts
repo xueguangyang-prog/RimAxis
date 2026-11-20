@@ -49,7 +49,7 @@ $("remove").addEventListener("click",async()=>{if(!confirm("確定刪除此服�
 $("logout").addEventListener("click",()=>{accessToken="";showLogin();$("password").value=""});
 </script></body></html>`;
 
-const corsHeaders = {"access-control-allow-origin":"*","access-control-allow-headers":"authorization, apikey, content-type","access-control-allow-methods":"GET, POST, PUT, DELETE, OPTIONS"};
+const corsHeaders = {"access-control-allow-origin":"https://ehzdoevqqmmtetulcpbo.supabase.co","access-control-allow-headers":"authorization, apikey, content-type","access-control-allow-methods":"GET, POST, PUT, DELETE, OPTIONS"};
 function reply(data,status=200){return new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store",...corsHeaders}})}
 function b64(bytes){return btoa(String.fromCharCode(...new Uint8Array(bytes)))}
 function fromB64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
@@ -71,7 +71,7 @@ async function currentUser(req){
 async function admin(path,method="GET",body=null){
  const headers={apikey:ANON_KEY,Authorization:"Bearer "+SERVICE_ROLE_KEY};
  if(body!==null)headers["Content-Type"]="application/json";
- const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{method,headers:{...headers,Prefer:"resolution=merge-duplicates,return=representation"},body:body===null?undefined:JSON.stringify(body)});
+ const prefs=method==="POST"?"resolution=merge-duplicates,return=minimal":((method==="PATCH"||method==="DELETE")?"return=minimal":null);\n const finalHeaders={...headers};if(prefs)finalHeaders.Prefer=prefs;\n const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{method,headers:finalHeaders,body:body===null?undefined:JSON.stringify(body)});
  if(!r.ok)throw new Error("credential_storage_failed");
  return r.status===204?null:await r.json().catch(()=>null);
 }
