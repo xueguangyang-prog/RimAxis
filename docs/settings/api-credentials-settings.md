@@ -4,7 +4,7 @@
 
 - 用户入口：https://harmonia.xg-y-52f.workers.dev
 - 应用页面与 API：https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings
-- Supabase Edge Function：`harmonia-settings`（生产版本 2，状态 ACTIVE）
+- Supabase Edge Function：`harmonia-settings`（生产版本 11，状态 ACTIVE；仅提供 API，不再托管页面 HTML）
 - Cloudflare Worker：`harmonia`（生产部署，302 跳转至设置中心）
 
 ## 页面能力
@@ -42,4 +42,4 @@
 
 - 本次生产部署完成的是 API 密钥管理中心，不代表全球潜客发现采集引擎已经完成。
 - 登录依赖当前 Supabase Auth 项目配置；如项目启用了邮箱确认，新用户须先完成邮箱验证。
-- 本次通过部署状态、数据库结构、RLS 策略和 Vault 权限检查；尚未使用真实用户账户及新生成的 API Token 完成端到端交互验证。首次登录、保存、验证和删除仍需在浏览器中完成验收。
+- 2026-11-20：生产 Edge Function 已升级至 v11，并与仓库 API-only 源码对齐。数据库已确认 `api_credentials` 与 `api_credential_events` 均启用 RLS，凭据读写策略按 `auth.uid() = owner_id` 隔离。Supabase 安全顾问目前报告一项 Auth 警告：泄露密码保护未启用。生产浏览器在本轮验收请求触发 Cloudflare Browser Rendering 429 限流，因此本次未能在 v11 发布后完成线上页面和真实用户凭据端到端验收；不得将其标记为已通过。
