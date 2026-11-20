@@ -25,6 +25,12 @@ function noStore(headers) {
   return next;
 }
 
+function withSecurityHeaders(headers) {
+  const next = noStore(headers);
+  next.set("content-security-policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self' data:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+  return next;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -39,9 +45,7 @@ export default {
       }
       const assetRequest = new Request(new URL("/", request.url), request);
       const response = await env.ASSETS.fetch(assetRequest);
-      const headers = noStore(response.headers);
-      headers.set("content-security-policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self' data:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
-      return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers: withSecurityHeaders(response.headers) });
     }
 
     if (["/auth/v1/signup", "/auth/v1/token"].includes(url.pathname) && request.method === "POST") {
@@ -67,6 +71,19 @@ export default {
         redirect: "manual"
       }));
       return new Response(upstream.body, { status: upstream.status, statusText: upstream.statusText, headers: noStore(upstream.headers) });
+    }
+
+    // Serve Vite-generated JS, CSS, fonts, and other static files through the
+    // Workers Assets binding. Without this fallback the HTML loads but its
+    // /assets/* requests fall through to the Worker 404 handler.
+    if (["GET", "HEAD"].includes(request.method)) {
+      const asset = await env.ASSETS.fetch(request);
+      if (asset.status !== 404) {
+        const headers = new Headers(asset.headers);
+        headers.set("x-content-type-options", "nosniff");
+        headers.set("referrer-policy", "no-referrer");
+        return new Response(asset.body, { status: asset.status, statusText: asset.statusText, headers });
+      }
     }
 
     return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
