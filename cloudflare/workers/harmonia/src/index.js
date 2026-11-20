@@ -47,6 +47,7 @@ label{display:block;font-size:13px;margin:22px 0 8px}input{width:100%;height:48p
 </section></main></div>
 <script>
 const API = "";
+const SUPABASE_PUBLISHABLE_KEY = "__SUPABASE_PUBLISHABLE_KEY__";
 let accessToken = "";
 const $ = id => document.getElementById(id);
 async function authFetch(path, options={}) {
@@ -64,7 +65,7 @@ function showLogin(){ $("app").classList.add("hidden"); $("login").classList.rem
 $("loginForm").addEventListener("submit",async e=>{
  e.preventDefault(); $("loginButton").disabled=true; $("loginMessage").textContent="正在登入…";
  try{
-  const r=await fetch("https://ehzdoevqqmmtetulcpbo.supabase.co/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":"sb_publishable_VqMW_gbCheRRti-ntdSlUg_1AHVOvaO"},body:JSON.stringify({email:$("email").value,password:$("password").value})});
+  const r=await fetch("https://ehzdoevqqmmtetulcpbo.supabase.co/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({email:$("email").value,password:$("password").value})});
   const d=await r.json(); if(!r.ok) throw new Error(d.msg||d.message||"登入失敗");
   accessToken=d.access_token; showApp();
  }catch(e){$("loginMessage").textContent=e.message}finally{$("loginButton").disabled=false}
@@ -125,7 +126,7 @@ async function handleApi(request,env,url) {
  try { auth=await requireUser(request,env); } catch { return json({error:"登入已失效，請重新登入。"},401); }
  const token=auth.token;
  if(url.pathname==="/api/credentials" && request.method==="GET"){
-  const r=await supa("api_credentials?select=provider,status,last_verified_at,last_error,updated_at&provider=eq.apify&limit=1",token,{},env,{},env);
+  const r=await supa("api_credentials?select=provider,status,last_verified_at,last_error,updated_at&provider=eq.apify&limit=1",token,{},env);
   const rows=await r.json(); return json({credential:rows[0]||null});
  }
  if(url.pathname==="/api/credentials" && request.method==="PUT"){
@@ -133,22 +134,22 @@ async function handleApi(request,env,url) {
   if(typeof body.token!=="string"||body.token.trim().length<12||body.token.length>4096) return json({error:"API Token 格式不正確。"},400);
   let enc;try{enc=await encryptToken(body.token.trim(),env)}catch{return json({error:"服務端加密配置尚未就緒。"},503)}
   const payload={provider:"apify",...enc,key_version:1,status:"saved",last_verified_at:null,last_error:null,updated_at:new Date().toISOString()};
-  const r=await supa("api_credentials?on_conflict=owner_id,provider",token,{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(payload)});
+  const r=await supa("api_credentials?on_conflict=owner_id,provider",token,{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(payload)},env);
   return json({saved:true});
  }
  if(url.pathname==="/api/credentials/verify" && request.method==="POST"){
-  const r=await supa("api_credentials?select=encrypted_value,encryption_iv,key_version&provider=eq.apify&limit=1",token);
+  const r=await supa("api_credentials?select=encrypted_value,encryption_iv,key_version&provider=eq.apify&limit=1",token,{},env);
   const rows=await r.json(); if(!rows.length)return json({error:"尚未配置 API Token。"},404);
   let secret;try{secret=await decryptToken(rows[0],env)}catch{return json({error:"密鑰解密失敗，請重新保存。"},500)}
   let valid=false;
   try{const check=await fetch("https://api.apify.com/v2/users/me",{headers:{Authorization:"Bearer "+secret}});valid=check.ok;}catch{}
   const now=new Date().toISOString();
   const patch={status:valid?"verified":"verification_failed",last_verified_at:now,last_error:valid?null:"Token 無效、已撤銷或上游服務暫時不可用。",updated_at:now};
-  await supa("api_credentials?provider=eq.apify",token,{method:"PATCH",body:JSON.stringify(patch),headers:{Prefer:"return=minimal"}});
+  await supa("api_credentials?provider=eq.apify",token,{method:"PATCH",body:JSON.stringify(patch),headers:{Prefer:"return=minimal"}},env);
   return json({valid});
  }
  if(url.pathname==="/api/credentials" && request.method==="DELETE"){
-  await supa("api_credentials?provider=eq.apify",token,{method:"DELETE",headers:{Prefer:"return=minimal"}});
+  await supa("api_credentials?provider=eq.apify",token,{method:"DELETE",headers:{Prefer:"return=minimal"}},env);
   return json({deleted:true});
  }
  return json({error:"Not found"},404);
@@ -157,7 +158,7 @@ export default {
  async fetch(request,env) {
   const url=new URL(request.url);
   if(request.method==="GET" && (url.pathname==="/"||url.pathname==="/settings/api-keys")){
-   return new Response(html,{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://ehzdoevqqmmtetulcpbo.supabase.co; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'"}});
+   return new Response(html.replace("__SUPABASE_PUBLISHABLE_KEY__",env.SUPABASE_PUBLISHABLE_KEY),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://ehzdoevqqmmtetulcpbo.supabase.co; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'"}});
   }
   if(url.pathname.startsWith("/api/")) {
    if(request.method!=="GET"&&request.method!=="PUT"&&request.method!=="POST"&&request.method!=="DELETE")return json({error:"Method not allowed"},405);
