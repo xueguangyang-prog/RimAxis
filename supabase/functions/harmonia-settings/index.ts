@@ -132,6 +132,7 @@ Deno.serve(async(req)=>{
   const page=path==="/settings"?html.replace('<div id="login" class="login">','<div id="login" class="login hidden">').replace('<div id="app" class="shell hidden">','<div id="app" class="shell">'):html;
   return new Response(page.replace("__PUBLISHABLE_KEY__",PUBLISHABLE_KEY),{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://ehzdoevqqmmtetulcpbo.supabase.co; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'"}});
  }
+ if(path==="/api/public-config"&&req.method==="GET")return reply({supabaseUrl:SUPABASE_URL,publishableKey:PUBLISHABLE_KEY});
  if(path==="/api/session")return await handleSession(req);
  if(path.startsWith("/api/")){
   if(!["GET","POST","PUT","DELETE"].includes(req.method))return reply({error:"Method not allowed"},405);
