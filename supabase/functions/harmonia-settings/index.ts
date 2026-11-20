@@ -25,7 +25,7 @@ async function currentUser(req){
  if(!auth.startsWith("Bearer ")){
   const cookie=req.headers.get("cookie")||"";
   const match=cookie.match(/(?:^|;\s*)harmonia_session=([^;]+)/);
-  if(match)auth="Bearer "+decodeURIComponent(match[1]);
+  if(match){try{auth="Bearer "+decodeURIComponent(match[1])}catch{return null}}
  }
  if(!auth.startsWith("Bearer "))return null;
  const r=await fetch(SUPABASE_URL+"/auth/v1/user",{headers:{apikey:ANON_KEY,Authorization:auth}});
@@ -67,7 +67,7 @@ async function handleApi(req,path){
   const rows=await admin("api_credentials?select=encrypted_value,encryption_iv,key_version&owner_id=eq."+owner+"&provider=eq.apify&limit=1");
   if(!rows?.length)return reply({error:"尚未配置 API Token。"},404);
   const secret=await decryptValue(rows[0]);let valid=false;
-  try{const upstream=await fetch("https://api.apify.com/v2/users/me",{headers:{Authorization:"Bearer "+secret}});valid=upstream.ok}catch{}
+  try{const upstream=await fetch("https://api.apify.com/v2/users/me",{headers:{Authorization:"Bearer "+secret},signal:AbortSignal.timeout(10000)});valid=upstream.ok}catch{}
   const now=new Date().toISOString();
   await admin("api_credentials?owner_id=eq."+owner+"&provider=eq.apify","PATCH",{status:valid?"verified":"verification_failed",last_verified_at:now,last_error:valid?null:"Token 無效、已撤銷或上游服務暫時不可用。",updated_at:now});
   await admin("api_credential_events","POST",{owner_id:user.id,provider:"apify",event_type:valid?"verified":"verification_failed",metadata:{}});
