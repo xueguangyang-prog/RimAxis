@@ -32,7 +32,7 @@ function BackgroundBeams(){return el("div",{className:"aceternity-beams","aria-h
  el("defs",null,...beamPaths.map((_,i)=>el(motion.linearGradient,{id:"aceternity-gradient-"+i,key:"gradient-"+i,initial:{x1:"0%",x2:"0%",y1:"0%",y2:"0%"},animate:{x1:["0%","100%"],x2:["0%","95%"],y1:["0%","100%"],y2:["0%",(93+i)%100+"%"]},transition:{duration:12+i*1.3,ease:"easeInOut",repeat:Infinity,delay:i*.65}},
   el("stop",{offset:"0%",stopColor:"#18CCFC",stopOpacity:"0"}),el("stop",{offset:"32.5%",stopColor:"#6344F5"}),el("stop",{offset:"100%",stopColor:"#AE48FF",stopOpacity:"0"})))),
  ...beamPaths.map((d,i)=>el("path",{key:"beam-"+i,d,stroke:"url(#aceternity-gradient-"+i+")",strokeOpacity:.48,strokeWidth:.7}))
- )))}
+ ))}
 function Spotlight(){return el(motion.div,{className:"aceternity-spotlight","aria-hidden":true,initial:{opacity:0},animate:{opacity:1},transition:{duration:1.1}})}
 function MovingBorder({children,duration=3000,rx="30%",ry="30%"}){
  const pathRef=React.useRef(null);
