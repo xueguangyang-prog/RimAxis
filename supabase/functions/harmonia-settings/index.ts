@@ -88,7 +88,8 @@ Deno.serve(async(req)=>{
  if(req.method==="GET"&&(path==="/"||path==="/login"||path==="/settings")){
   const target=path==="/"?"/login":path;
   return Response.redirect(new URL(target,"https://harmonia.xg-y-52f.workers.dev"),302);
- }\n if(path==="/api/public-config"&&req.method==="GET")return reply({supabaseUrl:SUPABASE_URL,publishableKey:PUBLISHABLE_KEY});
+ }
+ if(path==="/api/public-config"&&req.method==="GET")return reply({supabaseUrl:SUPABASE_URL,publishableKey:PUBLISHABLE_KEY});
  if(path==="/api/session")return await handleSession(req);
  if(path.startsWith("/api/")){
   if(!["GET","POST","PUT","DELETE"].includes(req.method))return reply({error:"Method not allowed"},405);
