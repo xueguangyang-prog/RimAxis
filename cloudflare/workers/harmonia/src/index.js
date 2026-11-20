@@ -19,14 +19,20 @@ import React,{useEffect,useState}from"https://esm.sh/react@18.3.1";import{create
 const el=React.createElement;
 
 const beamPaths=[
- "M-120 180C120 40 250 40 430 150S760 300 980 120",
- "M-80 430C150 250 340 250 520 360S820 500 1120 280",
- "M120 760C260 560 450 550 620 650S920 790 1180 600",
- "M650 -80C560 120 620 250 790 340S1040 460 1320 300",
- "M-140 600C80 430 220 420 390 500S710 650 920 500",
- "M380 -100C300 120 390 250 560 320S860 410 1080 250"
+ "M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875",
+ "M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867",
+ "M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859",
+ "M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851",
+ "M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843",
+ "M-345 -229C-345 -229 -277 176 187 303C651 430 719 835 719 835",
+ "M-338 -237C-338 -237 -270 168 194 295C658 422 726 827 726 827",
+ "M-331 -245C-331 -245 -263 160 201 287C665 414 733 819 733 819"
 ];
-function BackgroundBeams(){return el("div",{className:"aceternity-beams","aria-hidden":true},el("svg",{viewBox:"0 0 1200 800",fill:"none",preserveAspectRatio:"xMidYMid slice"},...beamPaths.map((d,i)=>el(motion.path,{key:i,d,stroke:i%2?"#67e8f9":"#a78bfa",strokeWidth:1.1,strokeLinecap:"round",initial:{pathLength:0,opacity:0},animate:{pathLength:[0,1,.25],opacity:[0,.62,.12]},transition:{duration:8+i*1.4,delay:i*.7,repeat:Infinity,ease:"easeInOut"}}))))}
+function BackgroundBeams(){return el("div",{className:"aceternity-beams","aria-hidden":true},el("svg",{viewBox:"0 0 696 316",fill:"none",preserveAspectRatio:"xMidYMid slice"},
+ el("defs",null,...beamPaths.map((_,i)=>el(motion.linearGradient,{id:"aceternity-gradient-"+i,key:"gradient-"+i,initial:{x1:"0%",x2:"0%",y1:"0%",y2:"0%"},animate:{x1:["0%","100%"],x2:["0%","95%"],y1:["0%","100%"],y2:["0%",(93+i)%100+"%"]},transition:{duration:12+i*1.3,ease:"easeInOut",repeat:Infinity,delay:i*.65}},
+  el("stop",{offset:"0%",stopColor:"#18CCFC",stopOpacity:"0"}),el("stop",{offset:"32.5%",stopColor:"#6344F5"}),el("stop",{offset:"100%",stopColor:"#AE48FF",stopOpacity:"0"})))),
+ ...beamPaths.map((d,i)=>el("path",{key:"beam-"+i,d,stroke:"url(#aceternity-gradient-"+i+")",strokeOpacity:.48,strokeWidth:.7}))
+ )))}
 function Spotlight(){return el(motion.div,{className:"aceternity-spotlight","aria-hidden":true,initial:{opacity:0},animate:{opacity:1},transition:{duration:1.1}})}
 function MovingBorder({children,duration=3000,rx="30%",ry="30%"}){
  const pathRef=React.useRef(null);
