@@ -64,6 +64,14 @@ export default {
       target.search = url.search;
       const headers = new Headers(request.headers);
       headers.delete("host");
+      // Convert the HttpOnly session cookie to a bearer header before proxying.
+      // This keeps credentials out of upstream request-cookie logs.
+      const cookie = headers.get("cookie") || "";
+      const sessionPart = cookie.split(";").map(x => x.trim()).find(x => x.startsWith("harmonia_session="));
+      if (sessionPart) {
+        try { headers.set("authorization", "Bearer " + decodeURIComponent(sessionPart.slice("harmonia_session=".length))); } catch {}
+      }
+      headers.delete("cookie");
       const upstream = await fetch(new Request(target.toString(), {
         method: request.method,
         headers,
