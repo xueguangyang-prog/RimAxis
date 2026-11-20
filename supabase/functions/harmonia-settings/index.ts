@@ -71,7 +71,8 @@ async function currentUser(req){
 async function admin(path,method="GET",body=null){
  const headers={apikey:ANON_KEY,Authorization:"Bearer "+SERVICE_ROLE_KEY};
  if(body!==null)headers["Content-Type"]="application/json";
- const prefs=method==="POST"?"resolution=merge-duplicates,return=minimal":((method==="PATCH"||method==="DELETE")?"return=minimal":null);\n const finalHeaders={...headers};if(prefs)finalHeaders.Prefer=prefs;\n const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{method,headers:finalHeaders,body:body===null?undefined:JSON.stringify(body)});
+ const prefs=method==="POST"?"resolution=merge-duplicates,return=minimal":((method==="PATCH"||method==="DELETE")?"return=minimal":null);
+ const finalHeaders={...headers};if(prefs)finalHeaders.Prefer=prefs;\n const r=await fetch(SUPABASE_URL+"/rest/v1/"+path,{method,headers:finalHeaders,body:body===null?undefined:JSON.stringify(body)});
  if(!r.ok)throw new Error("credential_storage_failed");
  return r.status===204?null:await r.json().catch(()=>null);
 }
