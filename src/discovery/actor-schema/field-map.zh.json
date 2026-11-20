@@ -1,0 +1,198 @@
+{
+  "searchStringsArray": {
+    "label": "搜索关键词",
+    "description": "按业务角色和语言自动生成搜索词",
+    "type": "string[]"
+  },
+  "locationQuery": {
+    "label": "搜索地区",
+    "description": "每次运行指定一个地区；支持国家或城市",
+    "type": "string"
+  },
+  "maxCrawledPlacesPerSearch": {
+    "label": "每个关键词最大企业数",
+    "type": "integer",
+    "minimum": 1
+  },
+  "language": {
+    "label": "结果语言",
+    "type": "string",
+    "default": "en"
+  },
+  "categoryFilterWords": {
+    "label": "企业类别过滤词",
+    "type": "string[]"
+  },
+  "searchMatching": {
+    "label": "名称匹配方式",
+    "type": "enum",
+    "values": {
+      "all": "全部匹配",
+      "only_includes": "仅包含",
+      "only_exact": "完全匹配"
+    }
+  },
+  "placeMinimumStars": {
+    "label": "最低评分",
+    "type": "enum"
+  },
+  "website": {
+    "label": "网站筛选",
+    "type": "enum",
+    "values": {
+      "allPlaces": "全部企业",
+      "withWebsite": "仅有网站",
+      "withoutWebsite": "仅无网站"
+    }
+  },
+  "skipClosedPlaces": {
+    "label": "跳过已关闭企业",
+    "type": "boolean"
+  },
+  "scrapePlaceDetailPage": {
+    "label": "采集企业详情页",
+    "type": "boolean"
+  },
+  "includeWebResults": {
+    "label": "采集网页补充结果",
+    "type": "boolean"
+  },
+  "scrapeDirectories": {
+    "label": "采集场所内企业目录",
+    "type": "boolean"
+  },
+  "maxQuestions": {
+    "label": "每家企业问答数量",
+    "type": "integer"
+  },
+  "scrapeContacts": {
+    "label": "采集企业网站联系方式",
+    "type": "boolean",
+    "privacy_sensitive": true
+  },
+  "scrapeSocialMediaProfiles": {
+    "label": "补充社交媒体公开资料",
+    "type": "object",
+    "privacy_sensitive": true
+  },
+  "maximumLeadsEnrichmentRecords": {
+    "label": "每家企业最多补充的联系人数量",
+    "type": "integer",
+    "default": 0,
+    "privacy_sensitive": true
+  },
+  "leadsEnrichmentDepartments": {
+    "label": "联系人部门筛选",
+    "type": "string[]",
+    "values": {
+      "c_suite": "高管层",
+      "product": "产品",
+      "engineering_technical": "工程技术",
+      "design": "设计",
+      "education": "教育",
+      "finance": "财务",
+      "human_resources": "人力资源",
+      "information_technology": "信息技术",
+      "legal": "法务",
+      "marketing": "市场营销",
+      "medical_health": "医疗健康",
+      "operations": "运营",
+      "sales": "销售",
+      "consulting": "咨询"
+    }
+  },
+  "verifyLeadsEnrichmentEmails": {
+    "label": "验证联系人邮箱",
+    "type": "boolean",
+    "privacy_sensitive": true
+  },
+  "maxReviews": {
+    "label": "采集评论数量",
+    "type": "integer"
+  },
+  "reviewsStartDate": {
+    "label": "评论起始日期",
+    "type": "string"
+  },
+  "reviewsSort": {
+    "label": "评论排序",
+    "type": "enum",
+    "values": {
+      "newest": "最新",
+      "mostRelevant": "最相关",
+      "highestRanking": "评分最高",
+      "lowestRanking": "评分最低"
+    }
+  },
+  "reviewsFilterString": {
+    "label": "评论关键词过滤",
+    "type": "string"
+  },
+  "reviewsOrigin": {
+    "label": "评论来源",
+    "type": "enum",
+    "values": {
+      "all": "全部来源",
+      "google": "仅 Google"
+    }
+  },
+  "scrapeReviewsPersonalData": {
+    "label": "采集评论者个人资料",
+    "type": "boolean",
+    "privacy_sensitive": true
+  },
+  "maxImages": {
+    "label": "每家企业图片数量",
+    "type": "integer"
+  },
+  "scrapeImageAuthors": {
+    "label": "采集图片作者",
+    "type": "boolean",
+    "privacy_sensitive": true
+  },
+  "enableCompetitorAnalysis": {
+    "label": "启用竞争对手分析",
+    "type": "boolean"
+  },
+  "maxCompetitorsToAnalyze": {
+    "label": "竞争分析企业上限",
+    "type": "integer",
+    "maximum": 100
+  },
+  "countryCode": {
+    "label": "国家代码",
+    "type": "string"
+  },
+  "city": {
+    "label": "城市",
+    "type": "string"
+  },
+  "state": {
+    "label": "州或省",
+    "type": "string"
+  },
+  "county": {
+    "label": "县或行政区",
+    "type": "string"
+  },
+  "postalCode": {
+    "label": "邮政编码",
+    "type": "string"
+  },
+  "customGeolocation": {
+    "label": "自定义地理范围",
+    "type": "object"
+  },
+  "startUrls": {
+    "label": "地图链接",
+    "type": "array"
+  },
+  "placeIds": {
+    "label": "地图地点 ID",
+    "type": "string[]"
+  },
+  "allPlacesNoSearchAction": {
+    "label": "地图全量采集模式",
+    "type": "enum"
+  }
+}
