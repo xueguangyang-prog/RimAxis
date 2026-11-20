@@ -9,7 +9,7 @@ Harmonia 全球轮毂行业潜客发现平台。
 - **应用服务**：Supabase Edge Function `harmonia-settings`
 - **数据库项目**：`ehzdoevqqmmtetulcpbo`
 
-设置中心目前支持用户登录、采集服务 Token 保存、重新验证、删除及状态查询。凭据在服务端使用 AES-256-GCM 加密，主密钥由 Supabase Vault 管理；数据库不保存 API Token 明文。
+设置中心目前支持用户登录、采集服务 Token 保存、重新验证、删除及状态查询。Supabase Edge Function `harmonia-settings` 生产版本为 v11，仅承担 API 与凭据服务；页面由 Cloudflare Worker 提供。凭据在服务端使用 AES-256-GCM 加密，主密钥由 Supabase Vault 管理；数据库不保存 API Token 明文。
 
 ## 主要目录
 
