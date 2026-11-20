@@ -1,7 +1,7 @@
 export default {
   async fetch(request) {
     const incoming = new URL(request.url);
-    if (incoming.pathname === "/health") {
+    if (incoming.pathname === "/") {\n      return Response.redirect(new URL("/login", request.url), 302);\n    }\n    if (incoming.pathname === "/health") {
       return new Response("ok", {headers: {"content-type":"text/plain; charset=utf-8","cache-control":"no-store"}});
     }
     const target = new URL("https://ehzdoevqqmmtetulcpbo.supabase.co/functions/v1/harmonia-settings");
