@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://ehzdoevqqmmtetulcpbo.supabase.co";
-const SUPABASE_KEY = "sb_publishable_VqMW_gbCheRRti-ntdSlUg_1AHVOvaO";
+const SUPABASE_KEY = "";
 
 const html = String.raw`<!doctype html>
 <html lang="zh-Hant">
