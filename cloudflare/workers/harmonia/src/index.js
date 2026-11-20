@@ -8,9 +8,10 @@ const PAGE=String.raw`<!doctype html><html lang="zh-Hant"><head><meta charset="u
 .aceternity-spotlight{position:absolute;inset:-1px;pointer-events:none;z-index:0;overflow:hidden;border-radius:inherit;background:radial-gradient(560px circle at var(--spot-x,50%) var(--spot-y,0%),rgba(139,92,246,.18),transparent 62%)}
 .auth,.panel{isolation:isolate}
 .auth>*:not(.aceternity-spotlight),.panel>*:not(.aceternity-spotlight){position:relative;z-index:1}
-.aceternity-moving-border{position:relative;isolation:isolate;overflow:hidden}
-.aceternity-moving-border:before{content:"";position:absolute;inset:-180%;z-index:-1;background:conic-gradient(from 0deg,transparent 0 68%,#a78bfa 76%,#67e8f9 82%,transparent 90%);animation:aceternity-border-spin 4s linear infinite}
-.aceternity-moving-border:after{content:"";position:absolute;inset:1px;z-index:-1;border-radius:inherit;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2)}
+.aceternity-moving-border{position:relative;isolation:isolate;overflow:hidden;padding:1px;border:0;background:transparent}
+.aceternity-moving-border:before{content:"";position:absolute;inset:-180%;z-index:0;background:conic-gradient(from 0deg,transparent 0 68%,#a78bfa 76%,#67e8f9 82%,transparent 90%);animation:aceternity-border-spin 4s linear infinite}
+.aceternity-moving-border:after{content:"";position:absolute;inset:1px;z-index:1;border-radius:inherit;background:linear-gradient(100deg,#7c3aed,#6366f1 58%,#0891b2)}
+.aceternity-moving-border span{position:relative;z-index:2;display:inline-flex;align-items:center;justify-content:center}
 @keyframes aceternity-border-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.aceternity-moving-border:before{animation:none}.aceternity-beams{opacity:.16}}
 </style></head><body><div id="root"></div><script type="module">
